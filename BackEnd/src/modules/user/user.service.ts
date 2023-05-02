@@ -33,7 +33,7 @@ export class UserService {
     async update(id: number, data: UserDTO){
         const userExists = await this.prisma.user.findUnique({
             where: {
-                id
+                id,
             },
         });
 
@@ -43,6 +43,24 @@ export class UserService {
 
         return await this.prisma.user.update({
             data,
+            where: {
+                id,
+            },
+        });
+    }
+
+    async delete(id: number){
+        const userExists = await this.prisma.user.findUnique({
+            where: {
+                id,
+            },
+        });
+
+        if(!userExists){
+            throw new Error('User does not exists!')
+        }
+
+        return await this.prisma.user.delete({
             where: {
                 id,
             },
