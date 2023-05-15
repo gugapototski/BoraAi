@@ -17,7 +17,7 @@ model User {
   @@map("users")
 }
 
-model Carona{
+model carona{
   id             Int      @id @default(autoincrement())
   end_origem     String
   hr_saida       DateTime

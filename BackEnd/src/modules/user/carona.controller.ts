@@ -1,7 +1,8 @@
 import { Body,Controller,Delete,Get,Param,Post,Put } from "@nestjs/common";
 import { CaronaService } from './carona.service';
 import { CaronaDTO } from "./carona.dto";
-import { get } from "http";
+
+
 
 @Controller('Carona')
 export class CaronaController{
@@ -13,5 +14,15 @@ export class CaronaController{
     }
 
     @Get()
-    async fin
+    async findAll(){
+        return this.caronaService.findAll();
+    }
+    @Put(':id')
+    async update(@Param('id') id: string,@Body() data: CaronaDTO){
+        return this.caronaService.update(parseInt(id),data);
+    }
+    @Delete(':id')
+    async delete(@Param('id') id: string){
+        return this.caronaService.delete(parseInt(id));
+    }
 }
