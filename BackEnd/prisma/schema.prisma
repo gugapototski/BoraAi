@@ -18,6 +18,7 @@ model User {
 }
 
 model Carona{
+  id             Int      @id @default(autoincrement())
   end_origem     String
   hr_saida       DateTime
   hr_chegada     DateTime
