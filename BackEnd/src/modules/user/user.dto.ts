@@ -1,7 +1,10 @@
 export type UserDTO = {
     id?: number;
     nome: string;
+    sobrenome: string;
     telefone: string;
-    dataNascimento: Date;
     ra: number;
+    senha: string;
+    confirmarSenha: string;
+
 };
