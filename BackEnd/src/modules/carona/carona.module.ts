@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { CaronaController } from './carona.controller';
+import { CaronaController } from '../user/carona.controller';
 import { CaronaService } from './carona.service';
 import { PrismaService } from 'src/database/PrismaService';
 
