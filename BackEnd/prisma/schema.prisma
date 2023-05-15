@@ -16,3 +16,10 @@ model User {
 
   @@map("users")
 }
+
+model Carona{
+  end_origem     String
+  hr_saida       DateTime
+  hr_chegada     DateTime
+  Met_Pagamento  String
+}
