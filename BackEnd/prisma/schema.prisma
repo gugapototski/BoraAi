@@ -18,3 +18,13 @@ model User {
 
   @@map("users")
 }
+
+model carona{
+  id             Int      @id @default(autoincrement())
+  end_origem     String
+  hr_saida       DateTime
+  hr_chegada     DateTime
+  met_pagamento  String
+
+  @@map("carona")
+}
