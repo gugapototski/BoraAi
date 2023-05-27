@@ -15,6 +15,7 @@ model User {
   ra             Int    @unique
   senha          String
   confirmarSenha String
+  avaliacoes     avaliacao[]
 
   @@map("users")
 }
@@ -27,4 +28,13 @@ model carona{
   met_pagamento  String
 
   @@map("carona")
+}
+
+model avaliacao {
+  id            Int       @id @default(autoincrement())
+  userId        Int
+  user          User      @relation(fields: [userId], references: [id])
+  ST_avaliacao   Float
+
+  @@map("avaliacao")
 }
