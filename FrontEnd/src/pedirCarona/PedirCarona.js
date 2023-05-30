@@ -8,12 +8,12 @@ import {
   TextInput,
 } from "react-native";
 import Footer from "../../Comps/Footer";
-import CheckBox from "@react-native-community/checkbox";
+import Checkbox from "expo-checkbox";
 
 const PedirCarona = () => {
   const [caronaNome, setCaronaNome] = useState("Mara da Silva");
   const [distance, setDistance] = useState("2");
-  const [curentLocation, setCurentLocation] = useState("false");
+  const [curentLocation, setCurentLocation] = useState(false);
   const [meetLocation, setCurentMeetLocation] = useState("");
   const [userName, setCurentUserName] = useState("Luana");
   const [location, setLocation] = useState(
@@ -77,10 +77,18 @@ const PedirCarona = () => {
         >
           Está a {distance}Km de você
         </Text>
-        <View style={{ display: "flex", flexDirection: "row", gap: 15 }}>
-          <CheckBox
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            gap: 15,
+            alignItems: "center",
+          }}
+        >
+          <Checkbox
+            style={{ marginTop: 10 }}
             value={curentLocation}
-            onValueChange={(v) => setCurentLocation(v)}
+            onValueChange={setCurentLocation}
           />
           <Text style={[styles.textShadow, { marginTop: 10 }]}>
             Usar localização atual de {userName}
