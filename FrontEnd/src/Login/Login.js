@@ -9,7 +9,7 @@ import {
   Image,
 } from "react-native";
 
-const LoginScreen = () => {
+const Login = () => {
   const [ra, setRa] = useState("");
   const [password, setPassword] = useState("");
   const logo = require("../../icons/Logo.png");
@@ -106,4 +106,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default Login;
