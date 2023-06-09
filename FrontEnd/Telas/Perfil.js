@@ -1,22 +1,24 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
-import Footer from "../../Comps/Footer";
+import Footer from "../Comps/Footer";
+import { useNavigation } from '@react-navigation/native';
 
 const Perfil = () => {
   const [nome, setNome] = useState("Luana de Souza");
   const [caronasPegas, setCaronasPegas] = useState("20");
   const [caronasFornecidas, setCaronasFornecidas] = useState("0");
   const [avaliacao, setAvaliacao] = useState("5.0");
+  const navigation = useNavigation();
 
   const handleSair = () => {
-    console.log("Sair");
+    navigation.navigate('Inicial');
   };
 
   return (
     <View style={{ height: "100%", width: "100%" }}>
       <View style={styles.container}>
         <Image
-          source={require("../../icons/userImage.jpg")}
+          source={require("../icons/foto.png")}
           style={{
             width: 180,
             height: 180,
@@ -27,9 +29,9 @@ const Perfil = () => {
         />
         <Text style={[styles.title, styles.textShadow]}>{nome}</Text>
         <View style={{ alignContent: "flex-start" }}>
-          <View style={[styles.info]}>
+          <View style={styles.info}>
             <Image
-              source={require("./caronasPegas.png")}
+              source={require("../icons/caronasPegas.png")}
               style={{ width: 90, height: 60 }}
             />
             <View>
@@ -41,9 +43,9 @@ const Perfil = () => {
               </Text>
             </View>
           </View>
-          <View style={[styles.info]}>
+          <View style={styles.info}>
             <Image
-              source={require("./caronasFornecidas.png")}
+              source={require("../icons/Veiculo.png")}
               style={{
                 width: 90,
                 height: 90,
@@ -58,9 +60,9 @@ const Perfil = () => {
               </Text>
             </View>
           </View>
-          <View style={[styles.info]}>
+          <View style={styles.info}>
             <Image
-              source={require("./avaliacao.png")}
+              source={require("../icons/Estrela.png")}
               style={{ width: 64, height: 64, marginRight: 36 }}
             />
             <View>
@@ -73,9 +75,9 @@ const Perfil = () => {
             </View>
           </View>
         </View>
-        <TouchableOpacity style={[styles.quit]} onPress={handleSair}>
+        <TouchableOpacity style={styles.quit} onPress={handleSair}>
           <Image
-            source={require("./sair.png")}
+            source={require("../icons/sair.png")}
             style={{ width: 100, height: 45, marginTop: 20 }}
           />
         </TouchableOpacity>
@@ -110,22 +112,6 @@ const styles = StyleSheet.create({
     fontSize: 36,
     marginBottom: 10,
     marginTop: 40,
-  },
-
-  button: {
-    backgroundColor: "#FF2B2B",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 30,
-    paddingVertical: 15,
-    paddingHorizontal: 35,
-    width: 159,
-    marginTop: 50,
-    marginBottom: 90,
-  },
-  buttonText: {
-    color: "#FFFFFF",
-    fontSize: 18,
   },
   textShadow: {
     textShadowColor: "rgba(0, 0, 0, 0.25)",

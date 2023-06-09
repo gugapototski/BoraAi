@@ -7,7 +7,7 @@ import {
   Image,
   TextInput,
 } from "react-native";
-import Footer from "../../Comps/Footer";
+import Footer from "../Comps/Footer";
 import Checkbox from "expo-checkbox";
 
 const PedirCarona = () => {
@@ -37,7 +37,7 @@ const PedirCarona = () => {
           }}
         >
           <Image
-            source={require("../../icons/userImage.jpg")}
+            source={require("../icons/foto.png")}
             style={{
               width: 70,
               height: 70,
@@ -45,7 +45,7 @@ const PedirCarona = () => {
             }}
           />
           <Image
-            source={require("./arrowBack.png")}
+            source={require("../icons/seta-vermelha.png")}
             style={{
               width: 47,
               height: 47,
@@ -56,7 +56,7 @@ const PedirCarona = () => {
           Carona de {caronaNome}
         </Text>
         <Image
-          source={require("./pedirCarona.png")}
+          source={require("../icons/PedirCarona.png")}
           style={{ width: 223, height: 135 }}
         />
         <Text style={[styles.title, styles.textShadow, { width: "80%" }]}>
@@ -64,10 +64,10 @@ const PedirCarona = () => {
         </Text>
         <View style={{ display: "flex", flexDirection: "row", gap: 15 }}>
           <Image
-            source={require("./mark.png")}
+            source={require("../icons/localizacao.png")}
             style={{ width: 14, height: 20 }}
           />
-          <Text style={[styles.textShadow]}>{location}</Text>
+          <Text style={styles.textShadow}>{location}</Text>
         </View>
         <Text
           style={[
@@ -107,7 +107,7 @@ const PedirCarona = () => {
           style={[styles.button, styles.shadow]}
           onPress={handleCarona}
         >
-          <Text style={styles.buttonText}>Pedir Caroina</Text>
+          <Text style={styles.buttonText}>Pedir Carona</Text>
         </TouchableOpacity>
       </View>
       <Footer></Footer>
@@ -125,21 +125,6 @@ const styles = StyleSheet.create({
     width: 275,
     marginVertical: 40,
     fontSize: 14,
-  },
-  info: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    gap: 20,
-  },
-  infoTitle: {
-    fontSize: 19,
-    color: "#4F4F4F",
-  },
-  infoData: {
-    color: "#FF2B2B",
-    fontSize: 50,
   },
   container: {
     alignItems: "center",
