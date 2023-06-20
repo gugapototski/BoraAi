@@ -6,6 +6,24 @@ import { PrismaService } from 'src/database/PrismaService';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
+  async login(email: string, senha: string) {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        email,
+      },
+    });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    if (user.senha !== senha) {
+      throw new Error('Incorrect password');
+    }
+
+    return user;
+  }
+
   async create(userData: UserDTO) {
     const userExists = await this.prisma.user.findFirst({
       where: {

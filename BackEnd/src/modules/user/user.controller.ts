@@ -23,7 +23,27 @@ import { ApiExtraModels } from '@nestjs/swagger';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
+  @Post('login')
+  @ApiOperation({ summary: 'Fazer Login' })
+  @ApiParam({
+    name: 'Email',
+    description: 'Email do usário e senha',
+    type: 'string',
+  })
+  @ApiCreatedResponse({ description: 'Login foi efetuado' })
+  async login(@Body() loginData: { email: string; senha: string }) {
+    try {
+      const user = await this.userService.login(
+        loginData.email,
+        loginData.senha,
+      );
+      return { message: 'Login successful', user };
+    } catch (error) {
+      return { message: 'Login failed', error: error.message };
+    }
+  }
+
+  @Post('cadastro')
   @ApiOperation({ summary: 'Criar um novo usuário' })
   @ApiCreatedResponse({ description: 'Usuário criado com sucesso' })
   async create(@Body() data: UserDTO) {
