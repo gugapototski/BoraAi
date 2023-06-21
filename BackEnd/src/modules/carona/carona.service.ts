@@ -109,7 +109,7 @@ export class CaronaService {
     });
 
     if (!histCarona) {
-      throw new Error('HistCarona not found');
+      throw new Error('HistCarona não encontrado');
     }
 
     await this.prisma.hist_caronas.update({
@@ -126,11 +126,11 @@ export class CaronaService {
     });
 
     if (!carona) {
-      throw new Error('Carona not found');
+      throw new Error('Carona não encontrada');
     }
 
     if (carona.ST_carona !== 'Ativa') {
-      throw new Error('Carona is not active');
+      throw new Error('Carona não está ativa');
     }
 
     const user = await this.prisma.user.findUnique({
@@ -138,7 +138,7 @@ export class CaronaService {
     });
 
     if (!user) {
-      throw new Error('User not found');
+      throw new Error('Usuário não encontrado');
     }
 
     // Verifique se a carona já foi solicitada pelo usuário
@@ -151,7 +151,7 @@ export class CaronaService {
     });
 
     if (caronaSolicitada) {
-      throw new Error('Carona already requested');
+      throw new Error('Carona já solicitada');
     }
 
     // Atualizar o usuário associado à carona
@@ -172,11 +172,11 @@ export class CaronaService {
     });
 
     if (!carona) {
-      throw new Error('Carona not found');
+      throw new Error('Carona não encontrada');
     }
 
     if (carona.ST_carona !== 'Pendente' || carona.solicitanteId !== userId) {
-      throw new Error('Carona cannot be confirmed');
+      throw new Error('Essa carona não pode ser confirmada');
     }
 
     // Atualizar o status da carona para "Inativa"
