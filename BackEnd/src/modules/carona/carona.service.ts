@@ -199,12 +199,12 @@ export class CaronaService {
     });
 
     if (!carona) {
-      throw new Error('Carona not found');
+      throw new Error('Carona não encontrada');
     }
 
     // Verificar se a carona já está cancelada
     if (carona.ST_carona === 'Cancelada') {
-      throw new Error('Carona is already canceled');
+      throw new Error('Carona já está cancelada!');
     }
 
     // Atualizar o status da carona para "Ativa" e remover o solicitanteId

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { UserDTO } from './user.dto';
 import { PrismaService } from 'src/database/PrismaService';
 
@@ -32,7 +32,7 @@ export class UserService {
     });
 
     if (userExists) {
-      throw new Error('Usuário já existe');
+      throw new NotFoundException('Usuário já existe');
     }
 
     if (userData.senha === userData.confirmarSenha) {
@@ -87,7 +87,7 @@ export class UserService {
     });
 
     if (!userExists) {
-      throw new Error('User does not exists!');
+      throw new Error('O usuário não existe!');
     }
 
     const updateUser = await this.prisma.user.update({
