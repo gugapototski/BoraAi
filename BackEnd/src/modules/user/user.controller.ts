@@ -50,6 +50,13 @@ export class UserController {
     return this.userService.create(data);
   }
 
+  @Get(':id')
+  @ApiOperation({ summary: 'Obter o usuário pelo Id' })
+  @ApiOkResponse({ description: 'Usuário obtido com sucesso' })
+  async findId(@Param('id') id: string) {
+    return this.userService.findById(parseInt(id));
+  }
+
   @Get()
   @ApiOperation({ summary: 'Obter todos os usuários' })
   @ApiOkResponse({ description: 'Usuários obtidos com sucesso' })
