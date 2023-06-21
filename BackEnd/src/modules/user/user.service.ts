@@ -14,11 +14,11 @@ export class UserService {
     });
 
     if (!user) {
-      throw new Error('User not found');
+      throw new Error('Usuário não encontrado');
     }
 
     if (user.senha !== senha) {
-      throw new Error('Incorrect password');
+      throw new Error('Senha incorreta');
     }
 
     return user;
@@ -32,7 +32,7 @@ export class UserService {
     });
 
     if (userExists) {
-      throw new Error('User already exists');
+      throw new Error('Usuário já existe');
     }
 
     if (userData.senha === userData.confirmarSenha) {
@@ -69,7 +69,7 @@ export class UserService {
     });
 
     if (!user) {
-      throw new Error('User not found');
+      throw new Error('Usuário não encontrado');
     }
 
     return user;
@@ -117,7 +117,7 @@ export class UserService {
     });
 
     if (!userExists) {
-      throw new Error('User does not exists!');
+      throw new Error('O usuário não existe!');
     }
 
     return await this.prisma.user.delete({
