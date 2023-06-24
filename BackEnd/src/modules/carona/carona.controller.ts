@@ -21,36 +21,11 @@ import { CaronaDTO } from './carona.dto';
 export class CaronaController {
   constructor(private readonly caronaService: CaronaService) {}
 
-  @Post(':id/pegar')
-  @ApiOperation({ summary: 'Solicitar uma carona' })
-  @ApiParam({ name: 'id', description: 'ID da carona' })
-  @ApiCreatedResponse({ description: 'Carona solicitada com sucesso' })
-  async pegarCarona(@Param('id') id: string, @Body('userId') userId: string) {
-    const caronaId = parseInt(id);
-    const userIdParsed = parseInt(userId);
-
-    return this.caronaService.takeCarona(caronaId, userIdParsed);
-  }
-
   @Post()
   @ApiOperation({ summary: 'Criar uma nova carona' })
   @ApiCreatedResponse({ description: 'Carona criada com sucesso' })
   async create(@Body() data: CaronaDTO) {
     return this.caronaService.create(data);
-  }
-
-  @Get()
-  @ApiOperation({ summary: 'Obter todas as caronas' })
-  @ApiCreatedResponse({ description: 'Caronas obtidas com sucesso' })
-  async findAll() {
-    return this.caronaService.findAll();
-  }
-
-  @Get('ativa')
-  @ApiOperation({ summary: 'Obter caronas ativas' })
-  @ApiCreatedResponse({ description: 'Caronas ativas obtidas com sucesso' })
-  async findActiveCaronas() {
-    return this.caronaService.findActiveCaronas();
   }
 
   @Put(':id')
@@ -69,20 +44,15 @@ export class CaronaController {
     return this.caronaService.delete(parseInt(id));
   }
 
-  @Get('pendentes/:userId')
-  @ApiOperation({ summary: 'Obter caronas pendentes de um usuário' })
-  @ApiParam({ name: 'userId', description: 'ID do usuário' })
-  @ApiCreatedResponse({ description: 'Caronas pendentes obtidas com sucesso' })
-  async getCaronasPendentes(@Param('userId') userId: string) {
-    return this.caronaService.findPendentesByUserId(parseInt(userId));
-  }
+  @Post(':id/pegar')
+  @ApiOperation({ summary: 'Solicitar uma carona' })
+  @ApiParam({ name: 'id', description: 'ID da carona' })
+  @ApiCreatedResponse({ description: 'Carona solicitada com sucesso' })
+  async pegarCarona(@Param('id') id: string, @Body('userId') userId: string) {
+    const caronaId = parseInt(id);
+    const userIdParsed = parseInt(userId);
 
-  @Get('ativa/:userId')
-  @ApiOperation({ summary: 'Obter caronas ativas de um usário' })
-  @ApiParam({ name: 'userId', description: 'ID do usuário' })
-  @ApiCreatedResponse({ description: 'Caronas Ativas obtidas com sucesso' })
-  async getCaronasAtivasById(@Param('userId') userId: string) {
-    return this.caronaService.findAtivasByUserId(parseInt(userId));
+    return this.caronaService.takeCarona(caronaId, userIdParsed);
   }
 
   @Post(':caronaId/confirmar/:userId')
@@ -118,5 +88,35 @@ export class CaronaController {
     } catch (error) {
       return { error: error.message };
     }
+  }
+
+  @Get('ativa/:userId')
+  @ApiOperation({ summary: 'Obter caronas ativas de um usário' })
+  @ApiParam({ name: 'userId', description: 'ID do usuário' })
+  @ApiCreatedResponse({ description: 'Caronas Ativas obtidas com sucesso' })
+  async getCaronasAtivasById(@Param('userId') userId: string) {
+    return this.caronaService.findAtivasByUserId(parseInt(userId));
+  }
+
+  @Get('ativa')
+  @ApiOperation({ summary: 'Obter caronas ativas' })
+  @ApiCreatedResponse({ description: 'Caronas ativas obtidas com sucesso' })
+  async findActiveCaronas() {
+    return this.caronaService.findActiveCaronas();
+  }
+
+  @Get('pendentes/:userId')
+  @ApiOperation({ summary: 'Obter caronas pendentes de um usuário' })
+  @ApiParam({ name: 'userId', description: 'ID do usuário' })
+  @ApiCreatedResponse({ description: 'Caronas pendentes obtidas com sucesso' })
+  async getCaronasPendentes(@Param('userId') userId: string) {
+    return this.caronaService.findPendentesByUserId(parseInt(userId));
+  }
+
+  @Get()
+  @ApiOperation({ summary: 'Obter todas as caronas' })
+  @ApiCreatedResponse({ description: 'Caronas obtidas com sucesso' })
+  async findAll() {
+    return this.caronaService.findAll();
   }
 }
