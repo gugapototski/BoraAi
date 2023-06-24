@@ -77,6 +77,14 @@ export class CaronaController {
     return this.caronaService.findPendentesByUserId(parseInt(userId));
   }
 
+  @Get('ativa/:userId')
+  @ApiOperation({ summary: 'Obter caronas ativas de um usário' })
+  @ApiParam({ name: 'userId', description: 'ID do usuário' })
+  @ApiCreatedResponse({ description: 'Caronas Ativas obtidas com sucesso' })
+  async getCaronasAtivasById(@Param('userId') userId: string) {
+    return this.caronaService.findAtivasByUserId(parseInt(userId));
+  }
+
   @Post(':caronaId/confirmar/:userId')
   @ApiOperation({ summary: 'Confirmar uma carona' })
   @ApiParam({ name: 'caronaId', description: 'ID da carona' })

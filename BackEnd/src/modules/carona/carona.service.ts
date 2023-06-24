@@ -229,4 +229,12 @@ export class CaronaService {
       },
     });
   }
+  async findAtivasByUserId(userId: number) {
+    return this.prisma.carona.findMany({
+      where: {
+        userIdCarona: userId,
+        ST_carona: 'Ativa',
+      },
+    });
+  }
 }
