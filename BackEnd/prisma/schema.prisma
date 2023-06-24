@@ -29,8 +29,8 @@ model carona {
   userIdCarona   Int
   user           User      @relation(fields: [userIdCarona], references: [id])
   end_origem     String
-  hr_saida       DateTime
-  hr_chegada     DateTime
+  hr_saida       String
+  hr_chegada     String
   met_pagamento  String
   ST_carona      String
   solicitanteId  Int?
