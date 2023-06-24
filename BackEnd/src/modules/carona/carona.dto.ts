@@ -7,11 +7,11 @@ export class CaronaDTO {
   @ApiProperty()
   end_origem: string;
 
-  @ApiProperty({ type: Date })
-  hr_saida: Date;
+  @ApiProperty({ type: String })
+  hr_saida: string;
 
-  @ApiProperty({ type: Date })
-  hr_chegada: Date;
+  @ApiProperty({ type: String })
+  hr_chegada: string;
 
   @ApiProperty()
   met_pagamento: string;
