@@ -23,6 +23,29 @@ import { ApiExtraModels } from '@nestjs/swagger';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @Post('cadastro')
+  @ApiOperation({ summary: 'Criar um novo usuário' })
+  @ApiCreatedResponse({ description: 'Usuário criado com sucesso' })
+  async create(@Body() data: UserDTO) {
+    return this.userService.create(data);
+  }
+
+  @Put(':id')
+  @ApiOperation({ summary: 'Atualizar um usuário' })
+  @ApiParam({ name: 'id', description: 'ID do usuário' })
+  @ApiCreatedResponse({ description: 'Usuário atualizado com sucesso' })
+  async update(@Param('id') id: string, @Body() data: UserDTO) {
+    return this.userService.update(parseInt(id), data);
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Excluir um usuário' })
+  @ApiParam({ name: 'id', description: 'ID do usuário' })
+  @ApiCreatedResponse({ description: 'Usuário excluído com sucesso' })
+  async delete(@Param('id') id: string) {
+    return this.userService.delete(parseInt(id));
+  }
+
   @Post('login')
   @ApiOperation({ summary: 'Fazer Login' })
   @ApiParam({
@@ -43,13 +66,6 @@ export class UserController {
     }
   }
 
-  @Post('cadastro')
-  @ApiOperation({ summary: 'Criar um novo usuário' })
-  @ApiCreatedResponse({ description: 'Usuário criado com sucesso' })
-  async create(@Body() data: UserDTO) {
-    return this.userService.create(data);
-  }
-
   @Get(':id')
   @ApiOperation({ summary: 'Obter o usuário pelo Id' })
   @ApiOkResponse({ description: 'Usuário obtido com sucesso' })
@@ -62,21 +78,5 @@ export class UserController {
   @ApiOkResponse({ description: 'Usuários obtidos com sucesso' })
   async findAll() {
     return this.userService.findAll();
-  }
-
-  @Put(':id')
-  @ApiOperation({ summary: 'Atualizar um usuário' })
-  @ApiParam({ name: 'id', description: 'ID do usuário' })
-  @ApiCreatedResponse({ description: 'Usuário atualizado com sucesso' })
-  async update(@Param('id') id: string, @Body() data: UserDTO) {
-    return this.userService.update(parseInt(id), data);
-  }
-
-  @Delete(':id')
-  @ApiOperation({ summary: 'Excluir um usuário' })
-  @ApiParam({ name: 'id', description: 'ID do usuário' })
-  @ApiCreatedResponse({ description: 'Usuário excluído com sucesso' })
-  async delete(@Param('id') id: string) {
-    return this.userService.delete(parseInt(id));
   }
 }
