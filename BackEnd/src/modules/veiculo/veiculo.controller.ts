@@ -21,6 +21,14 @@ export class veiculoController {
     return this.veiculoService.create(veiculoDTO);
   }
 
+  @Delete(':id')
+  @ApiOperation({ summary: 'Excluir um veículo' })
+  @ApiParam({ name: 'id', description: 'ID do veículo' })
+  @ApiCreatedResponse({ description: 'Veículo excluído com sucesso' })
+  async delete(@Param('id') id: string) {
+    return this.veiculoService.delete(parseInt(id));
+  }
+
   @Get()
   @ApiOperation({ summary: 'Obter todos os veículos' })
   @ApiOkResponse({ description: 'Veículos obtidos com sucesso' })
@@ -34,13 +42,5 @@ export class veiculoController {
   @ApiOkResponse({ description: 'Veículos obtidos com sucesso' })
   async findById(@Param('userId') userId: string) {
     return this.veiculoService.findByUserId(parseInt(userId));
-  }
-
-  @Delete(':id')
-  @ApiOperation({ summary: 'Excluir um veículo' })
-  @ApiParam({ name: 'id', description: 'ID do veículo' })
-  @ApiCreatedResponse({ description: 'Veículo excluído com sucesso' })
-  async delete(@Param('id') id: string) {
-    return this.veiculoService.delete(parseInt(id));
   }
 }
