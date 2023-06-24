@@ -27,7 +27,9 @@ export class CaronaService {
     const caronasAtivas = await this.findActiveCaronas();
 
     if (caronasPendentes.length > 0 || caronasAtivas.length > 0) {
-      throw new Error('Você já possui uma carona ativa ou pendente.');
+      throw new NotFoundException(
+        'Você já possui uma carona ativa ou pendente.',
+      );
     }
 
     // Resto do código para criar a carona
