@@ -56,19 +56,19 @@ export class CaronaController {
     return this.caronaService.takeCarona(caronaId, userIdParsed);
   }
 
-  @Post(':caronaId/confirmar/:userId')
+  @Post(':caronaId/confirmar/:solicitanteId')
   @ApiOperation({ summary: 'Confirmar uma carona' })
   @ApiParam({ name: 'caronaId', description: 'ID da carona' })
   @ApiParam({ name: 'userId', description: 'ID do solicitante' })
   @ApiCreatedResponse({ description: 'Carona confirmada com sucesso' })
   async confirmarCarona(
     @Param('caronaId') caronaId: string,
-    @Param('userId') userId: string,
+    @Param('solicitanteId') solicitanteId: string,
   ) {
     try {
       const carona = await this.caronaService.confirmCarona(
         parseInt(caronaId),
-        parseInt(userId),
+        parseInt(solicitanteId),
       );
       return { message: 'Carona confirmada com sucesso', carona };
     } catch (error) {
