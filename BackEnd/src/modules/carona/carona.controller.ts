@@ -121,22 +121,17 @@ export class CaronaController {
     return this.caronaService.findAll();
   }
 
-  @Put(':caronaid/inativa/:userId')
+  @Put(':caronaId/inativa/:userId')
   @ApiOperation({ summary: 'Atualizar carona para inativa' })
   @ApiCreatedResponse({ description: 'Carona atualizada com sucesso' })
   async putSetCaronaInativa(
-    @Param('id') caronaId: string,
+    @Param('caronaId') caronaId: string,
     @Param('userId') userId: string,
   ) {
-    try {
-      const carona = await this.caronaService.setCaronaInativa(
-        parseInt(caronaId),
-        parseInt(userId),
-      );
-      return { message: 'Não é possivel concluir essa carona', carona };
-    } catch (error) {
-      return { error: error.message };
-    }
+    return this.caronaService.setCaronaInativa(
+      parseInt(caronaId),
+      parseInt(userId),
+    );
   }
   @Get('andamento/solicitante/:solicitanteId')
   @ApiOperation({

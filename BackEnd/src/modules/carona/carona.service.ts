@@ -149,7 +149,6 @@ export class CaronaService {
       throw new Error('Usuário não encontrado');
     }
 
-    // Verifique se a carona já foi solicitada pelo usuário
     const caronaSolicitada = await this.prisma.carona.findFirst({
       where: {
         id: caronaId,
@@ -241,9 +240,9 @@ export class CaronaService {
     });
   }
 
-  async setCaronaInativa(id: number, userId: number) {
+  async setCaronaInativa(idCarona: number, userId: number) {
     await this.prisma.carona.update({
-      where: { id: id },
+      where: { id: idCarona },
       data: {
         ST_carona: 'Inativa',
       },
