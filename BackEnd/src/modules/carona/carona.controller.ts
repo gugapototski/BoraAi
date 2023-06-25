@@ -121,16 +121,16 @@ export class CaronaController {
     return this.caronaService.findAll();
   }
 
-  @Put(':caronaId/inativa/:userId')
+  @Put(':caronaId/inativa/:solicitanteId')
   @ApiOperation({ summary: 'Atualizar carona para inativa' })
   @ApiCreatedResponse({ description: 'Carona atualizada com sucesso' })
   async putSetCaronaInativa(
     @Param('caronaId') caronaId: string,
-    @Param('userId') userId: string,
+    @Param('solicitanteId') solicitanteId: string,
   ) {
     return this.caronaService.setCaronaInativa(
       parseInt(caronaId),
-      parseInt(userId),
+      parseInt(solicitanteId),
     );
   }
   @Get('andamento/solicitante/:solicitanteId')
