@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/database/PrismaService';
 import { CaronaDTO } from './carona.dto';
+import { async } from 'rxjs';
 
 @Injectable()
 export class CaronaService {
@@ -25,11 +26,16 @@ export class CaronaService {
     // Verificar se o usuário possui uma carona ativa ou pendente
     const caronasPendentes = await this.findPendentesByUserId(userIdCarona);
     const caronasAtivas = await this.findAtivasByUserId(userIdCarona);
+    const caronasEmAndamento = await this.findCaronaAndamentoUserid(
+      userIdCarona,
+    );
 
     if (caronasPendentes.length > 0) {
       throw new NotFoundException('Você já possui uma carona pendente.');
     } else if (caronasAtivas.length > 0) {
       throw new NotFoundException('Você já possui uma carona ativa.');
+    } else if (caronasEmAndamento.length > 0) {
+      throw new NotFoundException('Você já possui uma carona em andamento');
     }
 
     // Resto do código para criar a carona
@@ -181,16 +187,13 @@ export class CaronaService {
       throw new Error('Essa carona não pode ser confirmada');
     }
 
-    // Atualizar o status da carona para "Inativa"
+    // Atualizar o status da carona para "Em andamento"
     await this.prisma.carona.update({
       where: { id: caronaId },
       data: {
-        ST_carona: 'Inativa',
+        ST_carona: 'Em andamento',
       },
     });
-
-    // Atualizar o histórico de caronas do usuário solicitante
-    await this.updateHistCaronas(userId);
 
     return carona;
   }
@@ -234,6 +237,33 @@ export class CaronaService {
       where: {
         userIdCarona: userId,
         ST_carona: 'Ativa',
+      },
+    });
+  }
+
+  async setCaronaInativa(id: number, userId: number) {
+    await this.prisma.carona.update({
+      where: { id: id },
+      data: {
+        ST_carona: 'Inativa',
+      },
+    });
+    await this.updateHistCaronas(userId);
+  }
+
+  async findCaronaAndamentoIdsolicitante(userId: number) {
+    return this.prisma.carona.findMany({
+      where: {
+        solicitanteId: userId,
+        ST_carona: 'Em andamento',
+      },
+    });
+  }
+  async findCaronaAndamentoUserid(userId: number) {
+    return this.prisma.carona.findMany({
+      where: {
+        userIdCarona: userId,
+        ST_carona: 'Em andamento',
       },
     });
   }

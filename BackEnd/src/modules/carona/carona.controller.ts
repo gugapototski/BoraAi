@@ -15,6 +15,7 @@ import {
 } from '@nestjs/swagger';
 import { CaronaService } from './carona.service';
 import { CaronaDTO } from './carona.dto';
+import { get } from 'http';
 
 @Controller('Carona')
 @ApiTags('Carona')
@@ -118,5 +119,40 @@ export class CaronaController {
   @ApiCreatedResponse({ description: 'Caronas obtidas com sucesso' })
   async findAll() {
     return this.caronaService.findAll();
+  }
+
+  @Put(':caronaid/inativa/:userId')
+  @ApiOperation({ summary: 'Atualizar carona para inativa' })
+  @ApiCreatedResponse({ description: 'Carona atualizada com sucesso' })
+  async putSetCaronaInativa(
+    @Param('id') caronaId: string,
+    @Param('userId') userId: string,
+  ) {
+    try {
+      const carona = await this.caronaService.setCaronaInativa(
+        parseInt(caronaId),
+        parseInt(userId),
+      );
+      return { message: 'Não é possivel concluir essa carona', carona };
+    } catch (error) {
+      return { error: error.message };
+    }
+  }
+  @Get('andamento/solicitante/:solicitanteId')
+  @ApiOperation({
+    summary: 'Consultar a carona que está em andamento por o idSolicitante',
+  })
+  async getAndamentoSolicitante(@Param('solicitanteId') solicitanteId: string) {
+    return this.caronaService.findCaronaAndamentoIdsolicitante(
+      parseInt(solicitanteId),
+    );
+  }
+  @Get('andamento/:userId')
+  @ApiOperation({
+    summary:
+      'Consultar a carona que está em andamento através do Userid (Dono da carona)',
+  })
+  async getAndamentoUserId(@Param('userId') userId: string) {
+    return this.caronaService.findCaronaAndamentoUserid(parseInt(userId));
   }
 }
