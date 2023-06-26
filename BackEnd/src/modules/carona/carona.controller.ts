@@ -91,6 +91,19 @@ export class CaronaController {
     }
   }
 
+  @Put(':caronaId/inativa/:solicitanteId')
+  @ApiOperation({ summary: 'Atualizar carona para inativa' })
+  @ApiCreatedResponse({ description: 'Carona atualizada com sucesso' })
+  async putSetCaronaInativa(
+    @Param('caronaId') caronaId: string,
+    @Param('solicitanteId') solicitanteId: string,
+  ) {
+    return this.caronaService.setCaronaInativa(
+      parseInt(caronaId),
+      parseInt(solicitanteId),
+    );
+  }
+
   @Get('ativa/:userId')
   @ApiOperation({ summary: 'Obter caronas ativas de um usário' })
   @ApiParam({ name: 'userId', description: 'ID do usuário' })
@@ -121,18 +134,6 @@ export class CaronaController {
     return this.caronaService.findAll();
   }
 
-  @Put(':caronaId/inativa/:solicitanteId')
-  @ApiOperation({ summary: 'Atualizar carona para inativa' })
-  @ApiCreatedResponse({ description: 'Carona atualizada com sucesso' })
-  async putSetCaronaInativa(
-    @Param('caronaId') caronaId: string,
-    @Param('solicitanteId') solicitanteId: string,
-  ) {
-    return this.caronaService.setCaronaInativa(
-      parseInt(caronaId),
-      parseInt(solicitanteId),
-    );
-  }
   @Get('andamento/solicitante/:solicitanteId')
   @ApiOperation({
     summary: 'Consultar a carona que está em andamento por o idSolicitante',
