@@ -59,7 +59,7 @@ export class CaronaController {
   @Post(':caronaId/confirmar/:solicitanteId')
   @ApiOperation({ summary: 'Confirmar uma carona' })
   @ApiParam({ name: 'caronaId', description: 'ID da carona' })
-  @ApiParam({ name: 'userId', description: 'ID do solicitante' })
+  @ApiParam({ name: 'solicitanteId', description: 'ID do solicitante' })
   @ApiCreatedResponse({ description: 'Carona confirmada com sucesso' })
   async confirmarCarona(
     @Param('caronaId') caronaId: string,
