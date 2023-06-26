@@ -266,4 +266,12 @@ export class CaronaService {
       },
     });
   }
+  async findCaronapendenteIdCarona(idCarona: number) {
+    return this.prisma.carona.findMany({
+      where: {
+        id: idCarona,
+        ST_carona: 'Pendente',
+      },
+    });
+  }
 }

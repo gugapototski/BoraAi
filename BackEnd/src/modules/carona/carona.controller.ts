@@ -150,4 +150,12 @@ export class CaronaController {
   async getAndamentoUserId(@Param('userId') userId: string) {
     return this.caronaService.findCaronaAndamentoUserid(parseInt(userId));
   }
+
+  @Get('pendente/:CaronaId')
+  @ApiOperation({
+    summary: 'Consultar a carona que está pendente através do idCarona',
+  })
+  async getPendenteCaronaId(@Param('CaronaId') CaronaId: string) {
+    return this.caronaService.findCaronapendenteIdCarona(parseInt(CaronaId));
+  }
 }
