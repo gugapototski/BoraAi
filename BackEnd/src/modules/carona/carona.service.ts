@@ -26,16 +26,11 @@ export class CaronaService {
     // Verificar se o usuário possui uma carona ativa ou pendente
     const caronasPendentes = await this.findPendentesByUserId(userIdCarona);
     const caronasAtivas = await this.findAtivasByUserId(userIdCarona);
-    const caronasEmAndamento = await this.findCaronaAndamentoUserid(
-      userIdCarona,
-    );
 
     if (caronasPendentes.length > 0) {
       throw new NotFoundException('Você já possui uma carona pendente.');
     } else if (caronasAtivas.length > 0) {
       throw new NotFoundException('Você já possui uma carona ativa.');
-    } else if (caronasEmAndamento.length > 0) {
-      throw new NotFoundException('Você já possui uma carona em andamento');
     }
 
     // Resto do código para criar a carona
