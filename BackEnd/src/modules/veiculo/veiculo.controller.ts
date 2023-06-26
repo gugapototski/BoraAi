@@ -29,18 +29,18 @@ export class veiculoController {
     return this.veiculoService.delete(parseInt(id));
   }
 
-  @Get()
-  @ApiOperation({ summary: 'Obter todos os veículos' })
-  @ApiOkResponse({ description: 'Veículos obtidos com sucesso' })
-  async findAll() {
-    return this.veiculoService.findAll();
-  }
-
   @Get(':userId')
   @ApiOperation({ summary: 'Obter veículos por ID do usuário' })
   @ApiParam({ name: 'userId', description: 'ID do usuário' })
   @ApiOkResponse({ description: 'Veículos obtidos com sucesso' })
   async findById(@Param('userId') userId: string) {
     return this.veiculoService.findByUserId(parseInt(userId));
+  }
+
+  @Get()
+  @ApiOperation({ summary: 'Obter todos os veículos' })
+  @ApiOkResponse({ description: 'Veículos obtidos com sucesso' })
+  async findAll() {
+    return this.veiculoService.findAll();
   }
 }
