@@ -20,6 +20,7 @@ model User {
   caronas        carona[]
   historico      hist_caronas[]
   veiculo        veiculo[]
+  verificacao_email verificacao_email[]
 
   @@map("users")
 }
@@ -67,3 +68,13 @@ model veiculo {
 
   @@map("veiculo")
 }
+
+model verificacao_email {
+  id                 Int    @id @default(autoincrement())
+  userId             Int
+  user               User   @relation(fields: [userId], references: [id])
+  email_verificado   Boolean @default(false)
+
+  @@map("vericacao")
+}
+

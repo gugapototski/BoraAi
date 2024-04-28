@@ -54,6 +54,15 @@ CREATE TABLE "veiculo" (
     CONSTRAINT "veiculo_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "vericacao" (
+    "id" SERIAL NOT NULL,
+    "userId" INTEGER NOT NULL,
+    "email_verificado" BOOLEAN NOT NULL DEFAULT false,
+
+    CONSTRAINT "vericacao_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
@@ -71,3 +80,6 @@ ALTER TABLE "hist_caronas" ADD CONSTRAINT "hist_caronas_userId_fkey" FOREIGN KEY
 
 -- AddForeignKey
 ALTER TABLE "veiculo" ADD CONSTRAINT "veiculo_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "vericacao" ADD CONSTRAINT "vericacao_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
