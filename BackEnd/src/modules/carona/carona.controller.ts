@@ -15,7 +15,6 @@ import {
 } from '@nestjs/swagger';
 import { CaronaService } from './carona.service';
 import { CaronaDTO } from './carona.dto';
-import { get } from 'http';
 
 @Controller('Carona')
 @ApiTags('Carona')

@@ -70,10 +70,11 @@ model veiculo {
 }
 
 model verificacao_email {
-  id                 Int    @id @default(autoincrement())
-  userId             Int
-  user               User   @relation(fields: [userId], references: [id])
-  email_verificado   Boolean @default(false)
+  id                Int     @id @default(autoincrement())
+  userId            Int     
+  email_verificado  Boolean @default(false)
+  token_verificacao String
+  user              User    @relation(fields: [userId], references: [id])
 
   @@map("vericacao")
 }
