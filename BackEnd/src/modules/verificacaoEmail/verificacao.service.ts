@@ -44,13 +44,14 @@ export class VerificacaoService {
       }
     })
 
-    if (!verificacao) {
-      throw new Error('O verificão do usuário não existe!');
+    if (!verificacao || verificacao.token_verificacao !== verificacaoToken){
+      
+      return this.getHtmlFileAsString('../../../src/templates/verification_email_error.html')
     }
 
-    if (verificacao.token_verificacao !== verificacaoToken){
-      
-      throw new Error('Token de verificação enviado não corresponde ao token salvo no banco!')
+    if (verificacao.email_verificado == true){
+
+      return this.getHtmlFileAsString('../../../src/templates/verification_email_already_verified.html')
     }
 
     const updateVerificacao = await this.prisma.verificacao_email.update({
@@ -64,10 +65,10 @@ export class VerificacaoService {
 
     if (!updateVerificacao){
 
-      throw new Error("Erro ao tentar atulizar verificação!")
+      return this.getHtmlFileAsString('../../../src/templates/verification_email_error.html')
     }
 
-    return "E-mail verificado com sucesso!"
+    return this.getHtmlFileAsString('../../../src/templates/verification_sucess.html')
   }
 
   async findByIdUser(idUser: number){
@@ -85,7 +86,12 @@ export class VerificacaoService {
     return verificacao
   }
 
-  private generateVerificacaoToken(): string {
+  private getHtmlFileAsString(relativePathHtmlFile: string){
+
+    return require('fs').readFileSync(require('path').resolve(__dirname, relativePathHtmlFile), 'utf8');
+  }
+
+  private generateVerificacaoToken() {
 
     return require("node:crypto").randomUUID();
   }

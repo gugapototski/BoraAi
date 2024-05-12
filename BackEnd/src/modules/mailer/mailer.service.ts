@@ -4,28 +4,34 @@ import * as nodeMailer from 'nodemailer';
 @Injectable()
 export class MailerService {
 
+    private static readonly EMAIL_TESTE_EVIROMENT = 'jessica.mcclure@ethereal.email'
+    private static readonly PASSWORD_TESTE_EVIROMENT = 'E8HAVZgMMNWPpRZK1t'
     private transporter: nodeMailer.transporter
-
+   
     constructor () {
-        
+
         this.transporter = nodeMailer.createTransport({
             host: 'smtp.ethereal.email',
             port: 587,
             auth: {
-                user: 'jessica.mcclure@ethereal.email',
-                pass: 'E8HAVZgMMNWPpRZK1t'
+                user: MailerService.EMAIL_TESTE_EVIROMENT,
+                pass: MailerService.PASSWORD_TESTE_EVIROMENT
             }
         });
     }
 
     async sendVerificationEmail(id: number, email: string, verificacaoToken: string): Promise<void> {
 
+        let htmlContent = require('fs').readFileSync(require('path').resolve(__dirname,'../../../src/templates/verification_email.html'), 'utf8');
+
+        htmlContent = htmlContent.replace('${id}', id.toString()).replace('${verificacaoToken}', verificacaoToken);
+
         var mailOptions = {
-            from: "your_email@gmail.com",
+            from: MailerService.EMAIL_TESTE_EVIROMENT,
             to: email,
             subject: "BoraAí - Verficação do email",
-            text: "Cofirme o e-mail viculado a sua conta!", 
-            html: `<h1>Recebemos seu pedido de cadastro em nosso aplicativo!</h1><h3>Para verificar seu email e concluir o cadastro, clique <a href="https://boraaideplot-api.onrender.com/verificacao-email/${id}/${verificacaoToken}">aqui</a>.</h3><p>Se o botão acima não funcionar, copie e cole o seguinte link em seu navegador:</p><p>https://boraaideplot-api.onrender.com/verificacao-email/${id}/${verificacaoToken}</p>`
+            text: 'Cofirme o e-mail viculado a sua conta! Acesse o link informado: https://boraaideplot-api.onrender.com/verificacao-email/${id}/${verificacaoToken}', 
+            html: htmlContent
         }
 
         await this.transporter.sendMail(mailOptions)
