@@ -8,6 +8,9 @@ export class UserDTO {
   nome: string;
 
   @ApiProperty()
+  CPF: string;
+
+  @ApiProperty()
   telefone: string;
 
   @ApiProperty()

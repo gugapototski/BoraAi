@@ -1,13 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { UserDTO } from './user.dto';
 import { PrismaService } from 'src/database/PrismaService';
-import { VerificacaoService } from 'src/modules/verificacaoEmail/verificacao.service'
+import { VerificacaoService } from 'src/modules/verificacaoEmail/verificacao.service';
 
 @Injectable()
 export class UserService {
   constructor(
     private prisma: PrismaService,
-    private verficacaoEmailService: VerificacaoService
+    private verficacaoEmailService: VerificacaoService,
   ) {}
 
   async login(email: string, senha: string) {
@@ -32,6 +32,8 @@ export class UserService {
     const userExists = await this.prisma.user.findFirst({
       where: {
         email: userData.email,
+        telefone: userData.telefone,
+        CPF: userData.CPF,
       },
     });
 
@@ -44,6 +46,7 @@ export class UserService {
         data: {
           nome: userData.nome,
           telefone: userData.telefone,
+          CPF: userData.CPF,
           email: userData.email,
           senha: userData.senha,
           confirmarSenha: userData.confirmarSenha,
@@ -59,7 +62,7 @@ export class UserService {
         },
       });
 
-      this.verficacaoEmailService.create(newUser)
+      this.verficacaoEmailService.create(newUser);
 
       return newUser;
     } else {

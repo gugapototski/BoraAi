@@ -12,10 +12,11 @@ datasource db {
 model User {
   id             Int       @id @default(autoincrement())
   nome           String
-  telefone       String
+  telefone       String    @unique
   email          String    @unique
   senha          String
   confirmarSenha String
+  CPF            String    @unique
   avaliacoes     avaliacao[]
   caronas        carona[]
   historico      hist_caronas[]
