@@ -13,6 +13,7 @@ import {
   ApiParam,
   ApiCreatedResponse,
   ApiOkResponse,
+  ApiBody,
 } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { UserDTO } from './user.dto';
@@ -48,12 +49,19 @@ export class UserController {
 
   @Post('login')
   @ApiOperation({ summary: 'Fazer Login' })
-  @ApiParam({
-    name: 'Email',
-    description: 'Email do usário e senha',
-    type: 'string',
+  @ApiBody({
+    description: 'Dados de login do usuário',
+    type: 'object',
+    schema: {
+      type: 'object',
+      properties: {
+        email: { type: 'string', description: 'Email do usuário' },
+        senha: { type: 'string', description: 'Senha do usuário' },
+      },
+      required: ['email', 'senha'],
+    },
   })
-  @ApiCreatedResponse({ description: 'Login foi efetuado' })
+  @ApiCreatedResponse({ description: 'Login foi efetuado com sucesso' })
   async login(@Body() loginData: { email: string; senha: string }) {
     try {
       const user = await this.userService.login(
