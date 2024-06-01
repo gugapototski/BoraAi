@@ -23,12 +23,20 @@ export class AvaliacaoController {
     return novaAvaliacao;
   }
 
-  @Get('avaliacao/:autorUserId')
+  @Get(':autorUserId')
   @ApiOperation({ summary: 'Obter todas as avaliações do feitas pelo usuário' })
   @ApiParam({ name: 'autorUserId', description: 'ID do usuário avaliador' })
   @ApiCreatedResponse({ description: 'Avalicações obtidas com sucesso' })
   async findAll(@Param('autorUserId') autorUserId: number) {
     return this.avaliacaoService.findAll(autorUserId);
+  }
+  
+  @Get('ultima/:autorUserId')
+  @ApiOperation({ summary: 'Obter a última avaliação feita pelo usuário' })
+  @ApiParam({ name: 'autorUserId', description: 'ID do usuário avaliador' })
+  @ApiCreatedResponse({ description: 'Última avaliação feita pela usuário obtida com suscesso' })
+  async findLast(@Param('autorUserId') autorUserId: number) {
+    return this.avaliacaoService.findLast(autorUserId);
   }
 
   @Get('media/:avaliadoUserId')
