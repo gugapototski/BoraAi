@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/database/PrismaService';
 import { AvaliacaoDTO } from './avaliacao.dto';
+import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class AvaliacaoService {
@@ -34,7 +35,7 @@ export class AvaliacaoService {
     
     if (!avaliacao){
 
-      throw Error("Nenhuma avaliação foi encontrada!")
+      throw new NotFoundException("Nenhuma avaliação foi encontrada!")
     }
 
     return avaliacao
