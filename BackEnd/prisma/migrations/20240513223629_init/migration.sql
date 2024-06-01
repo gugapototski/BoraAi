@@ -6,6 +6,8 @@ CREATE TABLE "users" (
     "email" TEXT NOT NULL,
     "senha" TEXT NOT NULL,
     "confirmarSenha" TEXT NOT NULL,
+    "user" TEXT NOT NULL,
+    "CPF" TEXT NOT NULL,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
@@ -59,12 +61,19 @@ CREATE TABLE "vericacao" (
     "id" SERIAL NOT NULL,
     "userId" INTEGER NOT NULL,
     "email_verificado" BOOLEAN NOT NULL DEFAULT false,
+    "token_verificacao" TEXT NOT NULL,
 
     CONSTRAINT "vericacao_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "users_telefone_key" ON "users"("telefone");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_CPF_key" ON "users"("CPF");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "veiculo_placa_key" ON "veiculo"("placa");

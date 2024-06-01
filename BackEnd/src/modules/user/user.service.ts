@@ -1,14 +1,57 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { UserDTO } from './user.dto';
 import { PrismaService } from 'src/database/PrismaService';
-import { VerificacaoService } from 'src/modules/verificacaoEmail/verificacao.service'
+import { VerificacaoService } from 'src/modules/verificacaoEmail/verificacao.service';
 
 @Injectable()
 export class UserService {
   constructor(
     private prisma: PrismaService,
-    private verficacaoEmailService: VerificacaoService
+    private verficacaoEmailService: VerificacaoService,
   ) {}
+
+  async create(userData: UserDTO) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  
+    if (!emailRegex.test(userData.email)) {
+      throw new BadRequestException('Formato de email inválido');
+    }
+  
+    const userExists = await this.prisma.user.findFirst({
+      where: {
+        email: userData.email,
+        telefone: userData.telefone,
+        CPF: userData.CPF,
+      },
+    });
+  
+    if (userExists) {
+      throw new NotFoundException('Usuário já existe');
+    }
+  
+    if (userData.senha === userData.confirmarSenha) {
+      const newUser = await this.prisma.user.create({
+        data: {
+          ...userData
+        },
+      });
+  
+      // Criação do registro na tabela hist_caronas
+      const histCarona = await this.prisma.hist_caronas.create({
+        data: {
+          userId: newUser.id,
+          caronasPegas: 0,
+          caronasFornecidas: 0,
+        },
+      });
+  
+      this.verficacaoEmailService.create(newUser);
+  
+      return newUser;
+    } else {
+      throw new Error('Senha incorreta');
+    }
+  }
 
   async login(email: string, senha: string) {
     const user = await this.prisma.user.findFirst({
@@ -26,45 +69,6 @@ export class UserService {
     }
 
     return user;
-  }
-
-  async create(userData: UserDTO) {
-    const userExists = await this.prisma.user.findFirst({
-      where: {
-        email: userData.email,
-      },
-    });
-
-    if (userExists) {
-      throw new NotFoundException('Usuário já existe');
-    }
-
-    if (userData.senha === userData.confirmarSenha) {
-      const newUser = await this.prisma.user.create({
-        data: {
-          nome: userData.nome,
-          telefone: userData.telefone,
-          email: userData.email,
-          senha: userData.senha,
-          confirmarSenha: userData.confirmarSenha,
-        },
-      });
-
-      // Criação do registro na tabela hist_caronas
-      const histCarona = await this.prisma.hist_caronas.create({
-        data: {
-          userId: newUser.id,
-          caronasPegas: 0,
-          caronasFornecidas: 0,
-        },
-      });
-
-      this.verficacaoEmailService.create(newUser)
-
-      return newUser;
-    } else {
-      throw new Error('Senha incorreta');
-    }
   }
 
   async findById(id: number) {
