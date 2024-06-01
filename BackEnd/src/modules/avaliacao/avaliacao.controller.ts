@@ -23,13 +23,21 @@ export class AvaliacaoController {
     return novaAvaliacao;
   }
 
-  @Get('media/:userId')
+  @Get('avaliacao/:autorUserId')
+  @ApiOperation({ summary: 'Obter todas as avaliações do feitas pelo usuário' })
+  @ApiParam({ name: 'autorUserId', description: 'ID do usuário avaliador' })
+  @ApiCreatedResponse({ description: 'Avalicações obtidas com sucesso' })
+  async findAll(@Param('autorUserId') autorUserId: number) {
+    return this.avaliacaoService.findAll(autorUserId);
+  }
+
+  @Get('media/:avaliadoUserId')
   @ApiOperation({ summary: 'Obter a média de avaliações de um usuário' })
-  @ApiParam({ name: 'userId', description: 'ID do usuário' })
+  @ApiParam({ name: 'avaliadoUserId', description: 'ID do usuário avaliado' })
   @ApiCreatedResponse({ description: 'Média de avaliações obtida com sucesso' })
-  async obterMediaAvaliacoes(@Param('userId') userId: number) {
+  async obterMediaAvaliacoes(@Param('avaliadoUserId') avaliadoUserId: number) {
     const mediaAvaliacoes =
-      await this.avaliacaoService.obterMediaAvaliacoesPorUsuario(userId);
+      await this.avaliacaoService.obterMediaAvaliacoesPorUsuario(avaliadoUserId);
     return { mediaAvaliacoes };
   }
 }

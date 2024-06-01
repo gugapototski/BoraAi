@@ -6,20 +6,31 @@ import { AvaliacaoDTO } from './avaliacao.dto';
 export class AvaliacaoService {
   constructor(private prisma: PrismaService) {}
 
-  async obterMediaAvaliacoesPorUsuario(userId: number): Promise<number> {
-    const userIdInt = parseInt(userId.toString(), 10); // Converter para número inteiro
+  async findAll(autorUserId: number): Promise<AvaliacaoDTO[]>{
+
+    const avaliacoes = await this.prisma.avaliacao.findMany({
+      where: {
+        autorUserId: autorUserId
+      }
+    })
+
+    return avaliacoes
+  }
+
+  async obterMediaAvaliacoesPorUsuario(avaliadoUserId: number): Promise<number> {
+    const userIdInt = parseInt(avaliadoUserId.toString(), 10); // Converter para número inteiro
 
     const avaliacoesUsuario = await this.prisma.user.findUnique({
       where: {
         id: userIdInt,
       },
       include: {
-        avaliacoes: true,
+        avaliacoesAvaliado: true,
       },
     });
 
-    const totalAvaliacoes = avaliacoesUsuario.avaliacoes.length;
-    const somaAvaliacoes = avaliacoesUsuario.avaliacoes.reduce(
+    const totalAvaliacoes = avaliacoesUsuario.avaliacoesAvaliado.length;
+    const somaAvaliacoes = avaliacoesUsuario.avaliacoesAvaliado.reduce(
       (total, avaliacao) => total + avaliacao.ST_avaliacao,
       0,
     );
@@ -36,32 +47,14 @@ export class AvaliacaoService {
   }
 
   async processarAvaliacao(avaliacaoDTO: AvaliacaoDTO) {
-    const { userId, ST_avaliacao } = avaliacaoDTO;
-
-    // Obtendo as avaliações do usuário
-    const avaliacoesUsuario = await this.prisma.user.findUnique({
-      where: {
-        id: userId,
-      },
-      include: {
-        avaliacoes: true,
-      },
-    });
-
-    const totalAvaliacoes = avaliacoesUsuario.avaliacoes.length;
-    const somaAvaliacoes = avaliacoesUsuario.avaliacoes.reduce(
-      (total, avaliacao) => total + avaliacao.ST_avaliacao,
-      0,
-    );
-
-    const mediaAvaliacoes =
-      (somaAvaliacoes + ST_avaliacao) / (totalAvaliacoes + 1);
 
     // Salvando nova avaliação
     const novaAvaliacao = await this.prisma.avaliacao.create({
       data: {
-        userId,
-        ST_avaliacao,
+        autorUserId: avaliacaoDTO.autorUserId,
+        avaliadoUserId: avaliacaoDTO.avaliadoUserId,
+        ST_avaliacao: avaliacaoDTO.ST_avaliacao,
+        comentario_avaliacao: avaliacaoDTO.comentario_avaliacao
       },
     });
 
