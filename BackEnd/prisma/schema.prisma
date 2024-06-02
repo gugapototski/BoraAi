@@ -7,8 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-
 model User {
   id             Int       @id @default(autoincrement())
   nome           String
@@ -17,11 +15,12 @@ model User {
   senha          String
   confirmarSenha String
   CPF            String    @unique
-  avaliacoes     avaliacao[]
   caronas        carona[]
   historico      hist_caronas[]
   veiculo        veiculo[]
   verificacao_email verificacao_email[]
+  avaliacoesAutor avaliacao[]     @relation(name: "AutorUser")
+  avaliacoesAvaliado avaliacao[]  @relation(name: "AvaliadoUser")
 
   @@map("users")
 }
@@ -42,9 +41,12 @@ model carona {
 
 model avaliacao {
   id            Int       @id @default(autoincrement())
-  userId        Int
-  user          User      @relation(fields: [userId], references: [id])
+  autorUserId        Int
+  avaliadoUserId  Int       
   ST_avaliacao  Float
+  comentario_avaliacao String 
+  autorUser    User      @relation(name: "AutorUser", fields: [autorUserId], references: [id])
+  avaliadoUser    User      @relation(name: "AvaliadoUser", fields: [avaliadoUserId], references: [id])
 
   @@map("avaliacao")
 }

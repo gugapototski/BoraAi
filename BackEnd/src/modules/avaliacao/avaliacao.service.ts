@@ -1,25 +1,60 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/database/PrismaService';
 import { AvaliacaoDTO } from './avaliacao.dto';
+import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class AvaliacaoService {
   constructor(private prisma: PrismaService) {}
 
-  async obterMediaAvaliacoesPorUsuario(userId: number): Promise<number> {
-    const userIdInt = parseInt(userId.toString(), 10); // Converter para número inteiro
+  async findAll(autorUserId: number): Promise<AvaliacaoDTO[]>{
+
+    const autorUserIdInt = parseInt(autorUserId.toString(), 10);
+
+    const avaliacoes = await this.prisma.avaliacao.findMany({
+      where: {
+        autorUserId: autorUserIdInt
+      }
+    })
+
+    return avaliacoes
+  }
+
+  async findLast(autorUserId: number): Promise<AvaliacaoDTO>{
+
+    const autorUserIdInt = parseInt(autorUserId.toString(), 10);
+
+    const avaliacao = await this.prisma.avaliacao.findFirst({
+      where: {
+        autorUserId: autorUserIdInt
+      },
+      orderBy: {
+        id: "desc",
+      }
+    })
+    
+    if (!avaliacao){
+
+      throw new NotFoundException("Nenhuma avaliação foi encontrada!")
+    }
+
+    return avaliacao
+  }
+
+  async obterMediaAvaliacoesPorUsuario(avaliadoUserId: number): Promise<number> {
+    const avaliadoUserIdInt = parseInt(avaliadoUserId.toString(), 10); // Converter para número inteiro
 
     const avaliacoesUsuario = await this.prisma.user.findUnique({
       where: {
-        id: userIdInt,
+        id: avaliadoUserIdInt,
       },
       include: {
-        avaliacoes: true,
+        avaliacoesAvaliado: true,
       },
     });
 
-    const totalAvaliacoes = avaliacoesUsuario.avaliacoes.length;
-    const somaAvaliacoes = avaliacoesUsuario.avaliacoes.reduce(
+    const totalAvaliacoes = avaliacoesUsuario.avaliacoesAvaliado.length;
+    const somaAvaliacoes = avaliacoesUsuario.avaliacoesAvaliado.reduce(
       (total, avaliacao) => total + avaliacao.ST_avaliacao,
       0,
     );
@@ -36,35 +71,25 @@ export class AvaliacaoService {
   }
 
   async processarAvaliacao(avaliacaoDTO: AvaliacaoDTO) {
-    const { userId, ST_avaliacao } = avaliacaoDTO;
 
-    // Obtendo as avaliações do usuário
-    const avaliacoesUsuario = await this.prisma.user.findUnique({
-      where: {
-        id: userId,
-      },
-      include: {
-        avaliacoes: true,
-      },
-    });
+    const {autorUserId, avaliadoUserId, ST_avaliacao, comentario_avaliacao} = avaliacaoDTO
 
-    const totalAvaliacoes = avaliacoesUsuario.avaliacoes.length;
-    const somaAvaliacoes = avaliacoesUsuario.avaliacoes.reduce(
-      (total, avaliacao) => total + avaliacao.ST_avaliacao,
-      0,
-    );
+    try {
+       
+      const novaAvaliacao = await this.prisma.avaliacao.create({
+        data: {
+          autorUserId: parseInt(autorUserId.toString(), 10),
+          avaliadoUserId: parseInt(avaliadoUserId.toString(), 10),
+          ST_avaliacao: parseInt(ST_avaliacao.toString(), 10),
+          comentario_avaliacao: comentario_avaliacao
+        },
+      });
 
-    const mediaAvaliacoes =
-      (somaAvaliacoes + ST_avaliacao) / (totalAvaliacoes + 1);
+      return novaAvaliacao;
 
-    // Salvando nova avaliação
-    const novaAvaliacao = await this.prisma.avaliacao.create({
-      data: {
-        userId,
-        ST_avaliacao,
-      },
-    });
-
-    return novaAvaliacao;
+    } catch (error) {
+      
+      throw new Error('Error ao tentar criar avaliação');
+    }
   }
 }
