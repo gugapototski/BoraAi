@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UserDTO {
-  @ApiProperty({ required: false })
   id?: number;
 
   @ApiProperty()
@@ -21,4 +20,7 @@ export class UserDTO {
 
   @ApiProperty()
   confirmarSenha: string;
+
+  @ApiProperty()
+  flagMotorista: string;
 }
