@@ -6,31 +6,36 @@ CREATE TABLE "users" (
     "email" TEXT NOT NULL,
     "senha" TEXT NOT NULL,
     "confirmarSenha" TEXT NOT NULL,
-    "user" TEXT NOT NULL,
     "CPF" TEXT NOT NULL,
+    "flagMotorista" TEXT NOT NULL,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "carona" (
-    "id" SERIAL NOT NULL,
-    "userIdCarona" INTEGER NOT NULL,
-    "end_origem" TEXT NOT NULL,
+CREATE TABLE "corrida" (
+    "idCorrida" SERIAL NOT NULL,
+    "IdUserCorrida" INTEGER NOT NULL,
+    "latitudeUserOrigem" TEXT NOT NULL,
+    "longitudeUserOrigem" TEXT NOT NULL,
+    "latitudeUserDestino" TEXT NOT NULL,
+    "longitudeUserDestino" TEXT NOT NULL,
+    "endereco" TEXT NOT NULL,
     "hr_saida" TEXT NOT NULL,
     "hr_chegada" TEXT NOT NULL,
-    "met_pagamento" TEXT NOT NULL,
-    "ST_carona" TEXT NOT NULL,
-    "solicitanteId" INTEGER,
+    "ST_corrida" TEXT NOT NULL,
+    "idUserMotorista" INTEGER,
 
-    CONSTRAINT "carona_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "corrida_pkey" PRIMARY KEY ("idCorrida")
 );
 
 -- CreateTable
 CREATE TABLE "avaliacao" (
     "id" SERIAL NOT NULL,
-    "userId" INTEGER NOT NULL,
+    "autorUserId" INTEGER NOT NULL,
+    "avaliadoUserId" INTEGER NOT NULL,
     "ST_avaliacao" DOUBLE PRECISION NOT NULL,
+    "comentario_avaliacao" TEXT NOT NULL,
 
     CONSTRAINT "avaliacao_pkey" PRIMARY KEY ("id")
 );
@@ -79,10 +84,16 @@ CREATE UNIQUE INDEX "users_CPF_key" ON "users"("CPF");
 CREATE UNIQUE INDEX "veiculo_placa_key" ON "veiculo"("placa");
 
 -- AddForeignKey
-ALTER TABLE "carona" ADD CONSTRAINT "carona_userIdCarona_fkey" FOREIGN KEY ("userIdCarona") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "corrida" ADD CONSTRAINT "corrida_IdUserCorrida_fkey" FOREIGN KEY ("IdUserCorrida") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "avaliacao" ADD CONSTRAINT "avaliacao_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "corrida" ADD CONSTRAINT "corrida_idUserMotorista_fkey" FOREIGN KEY ("idUserMotorista") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "avaliacao" ADD CONSTRAINT "avaliacao_autorUserId_fkey" FOREIGN KEY ("autorUserId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "avaliacao" ADD CONSTRAINT "avaliacao_avaliadoUserId_fkey" FOREIGN KEY ("avaliadoUserId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "hist_caronas" ADD CONSTRAINT "hist_caronas_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

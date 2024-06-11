@@ -12,6 +12,8 @@ export class CorridaDTO {
   @ApiProperty()
   longitudeUserDestino: string;
   @ApiProperty()
+  enderco: string;
+  @ApiProperty()
   hr_saida: string;
   @ApiProperty()
   hr_chegada: string;

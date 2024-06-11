@@ -35,6 +35,7 @@ model corrida {
   longitudeUserOrigem    String
   latitudeUserDestino    String
   longitudeUserDestino   String
+  endereco               String
   hr_saida               String
   hr_chegada             String
   ST_corrida              String

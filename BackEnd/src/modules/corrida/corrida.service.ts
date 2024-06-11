@@ -25,6 +25,7 @@ export class CorridaService {
         longitudeUserOrigem: corridaDto.longitudeUserOrigem,
         latitudeUserDestino: corridaDto.latitudeUserDestino,
         longitudeUserDestino: corridaDto.longitudeUserDestino,
+        endereco: corridaDto.enderco,
         hr_saida: corridaDto.hr_saida,
         hr_chegada: corridaDto.hr_chegada,
         ST_corrida: 'Disponivel',
