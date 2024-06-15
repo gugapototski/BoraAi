@@ -102,11 +102,7 @@ export class UserService {
 
     const updateUser = await this.prisma.user.update({
       data: {
-        nome: userData.nome,
-        telefone: userData.telefone,
-        email: userData.email,
-        senha: userData.senha,
-        confirmarSenha: userData.confirmarSenha,
+        ...userData
       },
       where: {
         id,
