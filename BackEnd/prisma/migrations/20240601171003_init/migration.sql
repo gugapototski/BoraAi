@@ -6,7 +6,6 @@ CREATE TABLE "users" (
     "email" TEXT NOT NULL,
     "senha" TEXT NOT NULL,
     "confirmarSenha" TEXT NOT NULL,
-    "user" TEXT NOT NULL,
     "CPF" TEXT NOT NULL,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
@@ -29,8 +28,11 @@ CREATE TABLE "carona" (
 -- CreateTable
 CREATE TABLE "avaliacao" (
     "id" SERIAL NOT NULL,
-    "userId" INTEGER NOT NULL,
+    "autorUserId" INTEGER NOT NULL,
+    "avaliadoUserId" INTEGER NOT NULL,
     "ST_avaliacao" DOUBLE PRECISION NOT NULL,
+    "comentario_avaliacao" TEXT NOT NULL,
+    "status_avaliaçao" TEXT NOT NULL,
 
     CONSTRAINT "avaliacao_pkey" PRIMARY KEY ("id")
 );
@@ -82,7 +84,10 @@ CREATE UNIQUE INDEX "veiculo_placa_key" ON "veiculo"("placa");
 ALTER TABLE "carona" ADD CONSTRAINT "carona_userIdCarona_fkey" FOREIGN KEY ("userIdCarona") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "avaliacao" ADD CONSTRAINT "avaliacao_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "avaliacao" ADD CONSTRAINT "avaliacao_autorUserId_fkey" FOREIGN KEY ("autorUserId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "avaliacao" ADD CONSTRAINT "avaliacao_avaliadoUserId_fkey" FOREIGN KEY ("avaliadoUserId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "hist_caronas" ADD CONSTRAINT "hist_caronas_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

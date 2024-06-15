@@ -2,10 +2,15 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/database/PrismaService';
 import { CaronaDTO } from './carona.dto';
 import { async } from 'rxjs';
+import { AvaliacaoService } from '../avaliacao/avaliacao.service';
+import { AvaliacaoDTO } from '../avaliacao/avaliacao.dto';
 
 @Injectable()
 export class CaronaService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private avaliacaoService: AvaliacaoService,
+  ) {}
 
   async create(caronaDto: CaronaDTO) {
     const { userIdCarona } = caronaDto;
@@ -44,6 +49,16 @@ export class CaronaService {
         ST_carona: caronaDto.ST_carona,
       },
     });
+
+    const newAvaliacao: AvaliacaoDTO =  {
+      autorUserId: userIdCarona,
+      avaliadoUserId: number,
+      ST_avaliacao: number,
+      comentario_avaliacao: string,
+      status_avaliaçao: string,
+    }
+
+    this.avaliacaoService.processarAvaliacao(newAvaliacao);
 
     // Atualizar caronasFornecidas na tabela hist_caronas
     const histCarona = await this.prisma.hist_caronas.findFirst({
