@@ -1,8 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CorridaDTO {
+
+  @ApiProperty()
+  IdCorrida: number;
   @ApiProperty()
   IdUserCorrida: number;
+  @ApiProperty()
+  idUserMotorista: number;
   @ApiProperty()
   latitudeUserOrigem: string;
   @ApiProperty()

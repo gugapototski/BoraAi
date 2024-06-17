@@ -14,7 +14,7 @@ CREATE TABLE "users" (
 
 -- CreateTable
 CREATE TABLE "corrida" (
-    "idCorrida" SERIAL NOT NULL,
+    "IdCorrida" SERIAL NOT NULL,
     "IdUserCorrida" INTEGER NOT NULL,
     "latitudeUserOrigem" TEXT NOT NULL,
     "longitudeUserOrigem" TEXT NOT NULL,
@@ -26,20 +26,17 @@ CREATE TABLE "corrida" (
     "ST_corrida" TEXT NOT NULL,
     "idUserMotorista" INTEGER,
 
-    CONSTRAINT "corrida_pkey" PRIMARY KEY ("idCorrida")
+    CONSTRAINT "corrida_pkey" PRIMARY KEY ("IdCorrida")
 );
 
 -- CreateTable
 CREATE TABLE "avaliacao" (
     "id" SERIAL NOT NULL,
     "autorUserId" INTEGER NOT NULL,
-    "avaliadoUserId" INTEGER NOT NULL,
+    "corridaId" INTEGER NOT NULL,
     "ST_avaliacao" DOUBLE PRECISION NOT NULL,
     "comentario_avaliacao" TEXT NOT NULL,
-<<<<<<< HEAD:BackEnd/prisma/migrations/20240601171003_init/migration.sql
-    "status_avaliaçao" TEXT NOT NULL,
-=======
->>>>>>> 09e374237c8435d2c944756c8b5fb9d100bd36f4:BackEnd/prisma/migrations/20240611003027_init/migration.sql
+    "status_avaliacao" TEXT NOT NULL,
 
     CONSTRAINT "avaliacao_pkey" PRIMARY KEY ("id")
 );
@@ -97,13 +94,7 @@ ALTER TABLE "corrida" ADD CONSTRAINT "corrida_idUserMotorista_fkey" FOREIGN KEY 
 ALTER TABLE "avaliacao" ADD CONSTRAINT "avaliacao_autorUserId_fkey" FOREIGN KEY ("autorUserId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-<<<<<<< HEAD:BackEnd/prisma/migrations/20240601171003_init/migration.sql
-ALTER TABLE "avaliacao" ADD CONSTRAINT "avaliacao_autorUserId_fkey" FOREIGN KEY ("autorUserId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-=======
->>>>>>> 09e374237c8435d2c944756c8b5fb9d100bd36f4:BackEnd/prisma/migrations/20240611003027_init/migration.sql
-ALTER TABLE "avaliacao" ADD CONSTRAINT "avaliacao_avaliadoUserId_fkey" FOREIGN KEY ("avaliadoUserId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "avaliacao" ADD CONSTRAINT "avaliacao_corridaId_fkey" FOREIGN KEY ("corridaId") REFERENCES "corrida"("IdCorrida") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "hist_caronas" ADD CONSTRAINT "hist_caronas_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

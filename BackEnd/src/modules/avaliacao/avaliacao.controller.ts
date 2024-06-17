@@ -31,12 +31,12 @@ export class AvaliacaoController {
     return this.avaliacaoService.findAll(autorUserId);
   }
   
-  @Get('ultima/:autorUserId')
-  @ApiOperation({ summary: 'Obter a última avaliação feita pelo usuário' })
+  @Get('naoavaliadas/:autorUserId')
+  @ApiOperation({ summary: 'Obter as avaliaçãos não concluidas pelo usuário' })
   @ApiParam({ name: 'autorUserId', description: 'ID do usuário avaliador' })
-  @ApiCreatedResponse({ description: 'Última avaliação feita pela usuário obtida com suscesso' })
-  async findLast(@Param('autorUserId') autorUserId: number) {
-    return this.avaliacaoService.findLast(autorUserId);
+  @ApiCreatedResponse({ description: 'Avaliaçãos não concluidas pelo usuário obtidas com suscesso' })
+  async findAllNotAvaliated(@Param('autorUserId') autorUserId: number) {
+    return this.avaliacaoService.findAllNotAvaliated(autorUserId);
   }
 
   @Get('media/:avaliadoUserId')
