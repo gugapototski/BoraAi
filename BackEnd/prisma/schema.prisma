@@ -20,7 +20,6 @@ model User {
   veiculo        veiculo[]
   verificacao_email verificacao_email[]
   avaliacoesAutor avaliacao[]     @relation(name: "AutorUser")
-  avaliacoesAvaliado avaliacao[]  @relation(name: "AvaliadoUser")
   corridasComoPassageiro corrida[] @relation("UserAsPassenger")
   corridasComoMotorista  corrida[] @relation("UserAsDriver")
 
@@ -28,7 +27,7 @@ model User {
 }
 
 model corrida {
-  idCorrida              Int       @id @default(autoincrement())
+  IdCorrida              Int       @id @default(autoincrement())
   IdUserCorrida          Int
   user                   User      @relation("UserAsPassenger", fields: [IdUserCorrida], references: [id])
   latitudeUserOrigem     String
@@ -41,17 +40,20 @@ model corrida {
   ST_corrida              String
   idUserMotorista        Int?
   motorista              User?     @relation("UserAsDriver", fields: [idUserMotorista], references: [id])
+  avaliacao              avaliacao[]  @relation(name: "CorridaAvalicao")
+
   @@map("corrida")
 }
 
 model avaliacao {
   id            Int       @id @default(autoincrement())
   autorUserId        Int
-  avaliadoUserId  Int       
+  corridaId  Int       
   ST_avaliacao  Float
   comentario_avaliacao String 
+  status_avaliacao String
   autorUser    User      @relation(name: "AutorUser", fields: [autorUserId], references: [id])
-  avaliadoUser    User      @relation(name: "AvaliadoUser", fields: [avaliadoUserId], references: [id])
+  corrida    corrida      @relation(name: "CorridaAvalicao", fields: [corridaId], references: [IdCorrida])
 
   @@map("avaliacao")
 }

@@ -1,10 +1,14 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from 'src/database/PrismaService';
 import { CorridaDTO } from './corrida.dto';
+import { AvaliacaoService } from '../avaliacao/avaliacao.service';
 
 @Injectable()
 export class CorridaService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private avaliacaoSevice: AvaliacaoService,
+  ) {}
 
   async create(corridaDto: CorridaDTO) {
     // Verificar se o usuário existe
@@ -49,7 +53,7 @@ export class CorridaService {
 
   async pegarCorrida(corridaId: number, motoristaId: number) {
     const corrida = await this.prisma.corrida.findUnique({
-      where: { idCorrida: corridaId },
+      where: { IdCorrida: corridaId },
     });
 
     if (!corrida) {
@@ -73,7 +77,7 @@ export class CorridaService {
     }
 
     return this.prisma.corrida.update({
-      where: { idCorrida: corridaId },
+      where: { IdCorrida: corridaId },
       data: {
         ST_corrida: 'Em andamento',
         idUserMotorista: motoristaId,
@@ -83,7 +87,7 @@ export class CorridaService {
 
   async cancelarCorrida(corridaId: number, userId: number, isMotorista: boolean) {
     const corrida = await this.prisma.corrida.findUnique({
-      where: { idCorrida: corridaId },
+      where: { IdCorrida: corridaId },
     });
 
     if (!corrida) {
@@ -98,7 +102,7 @@ export class CorridaService {
 
     if (corrida.ST_corrida === 'Em andamento') {
       return this.prisma.corrida.update({
-        where: { idCorrida: corridaId },
+        where: { IdCorrida: corridaId },
         data: {
           ST_corrida: 'Disponivel',
           idUserMotorista: null,
@@ -106,7 +110,7 @@ export class CorridaService {
       });
     } else {
       return this.prisma.corrida.update({
-        where: { idCorrida: corridaId },
+        where: { IdCorrida: corridaId },
         data: {
           ST_corrida: 'Cancelada',
         },
@@ -134,13 +138,13 @@ export class CorridaService {
 
   async delete(corridaId: number) {
     return this.prisma.corrida.delete({
-      where: { idCorrida: corridaId },
+      where: { IdCorrida: corridaId },
     });
   }
 
   async finalizarCorrida(corridaId: number, motoristaId: number) {
     const corrida = await this.prisma.corrida.findUnique({
-      where: { idCorrida: corridaId },
+      where: { IdCorrida: corridaId },
     });
 
     if (!corrida) {
@@ -151,8 +155,21 @@ export class CorridaService {
       throw new BadRequestException('Você não é o motorista desta corrida');
     }
 
+    const newAvaliacao = await this.avaliacaoSevice.createNew({
+      corridaId: corrida.IdCorrida,
+      autorUserId: corrida.IdUserCorrida,
+      ST_avaliacao: 5,
+      comentario_avaliacao: "",
+      status_avaliacao: "F",
+    })
+
+    if (!newAvaliacao){
+
+      throw new Error('Error ao tentar criar avaliação');
+    }
+
     return this.prisma.corrida.update({
-      where: { idCorrida: corridaId },
+      where: { IdCorrida: corridaId },
       data: {
         ST_corrida: 'Finalizada',
       },
