@@ -15,5 +15,5 @@ export class AvaliacaoDTO {
   comentario_avaliacao: string;
 
   @ApiProperty()
-  status_avaliacao: string;
+  status_avaliacao: string = "F";
 }

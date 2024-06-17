@@ -59,8 +59,12 @@ export class AvaliacaoService {
 
     corridas.forEach(corrida => {
       corrida.avaliacao.forEach(avaliacao => {
-        somaAvaliacoes += avaliacao.ST_avaliacao;
-        totalAvaliacoes++;
+
+        if (avaliacao.status_avaliacao = "T"){
+          somaAvaliacoes += avaliacao.ST_avaliacao;
+          totalAvaliacoes++;
+        }
+  
       });
     });
 
