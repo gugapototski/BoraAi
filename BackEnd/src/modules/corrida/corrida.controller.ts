@@ -6,12 +6,14 @@ import {
   Param,
   Post,
   Put,
+  ParseIntPipe
 } from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
   ApiCreatedResponse,
   ApiParam,
+  ApiOkResponse
 } from '@nestjs/swagger';
 import { CorridaService } from './corrida.service';
 import { CorridaDTO } from './corrida.dto';
@@ -93,5 +95,25 @@ export class CorridaController {
   @ApiCreatedResponse({ description: 'Corrida excluída com sucesso' })
   async delete(@Param('id') id: string) {
     return this.corridaService.delete(parseInt(id));
+  }
+
+  @Get('finalizadas/passageiro/:idUserCorrida')
+  @ApiOperation({ summary: 'Obter corridas finalizadas pelo passageiro' })
+  @ApiParam({ name: 'idUserCorrida', description: 'ID do usuário passageiro' })
+  @ApiOkResponse({ description: 'Corridas finalizadas obtidas com sucesso' })
+  async getFinalizadasByPassageiro(
+    @Param('idUserCorrida', ParseIntPipe) idUserCorrida: number
+  ) {
+    return await this.corridaService.findFinalizadasByPassageiro(idUserCorrida);
+  }
+
+  @Get('finalizadas/motorista/:idUserMotorista')
+  @ApiOperation({ summary: 'Obter corridas finalizadas pelo motorista' })
+  @ApiParam({ name: 'idUserMotorista', description: 'ID do motorista' })
+  @ApiOkResponse({ description: 'Corridas finalizadas obtidas com sucesso' })
+  async getFinalizadasByMotorista(
+    @Param('idUserMotorista', ParseIntPipe) idUserMotorista: number
+  ) {
+    return await this.corridaService.findFinalizadasByMotorista(idUserMotorista);
   }
 }

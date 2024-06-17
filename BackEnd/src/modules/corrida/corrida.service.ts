@@ -114,6 +114,24 @@ export class CorridaService {
     }
   }
 
+  async findFinalizadasByPassageiro(idUserCorrida: number) {
+    return await this.prisma.corrida.findMany({
+      where: {
+        IdUserCorrida: idUserCorrida,
+        ST_corrida: 'Finalizada'
+      }
+    });
+  }
+
+  async findFinalizadasByMotorista(idUserMotorista: number) {
+    return await this.prisma.corrida.findMany({
+      where: {
+        idUserMotorista: idUserMotorista,
+        ST_corrida: 'Finalizada'
+      }
+    });
+  }
+
   async delete(corridaId: number) {
     return this.prisma.corrida.delete({
       where: { idCorrida: corridaId },
